@@ -40,7 +40,7 @@
   .notice.show{display:block}
   .notice b{color:#fff}
   /* ---------- summary ---------- */
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0 6px}
+  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:560px;margin:20px auto 6px}
   @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
   .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 10px;text-align:center}
   .stat .n{font-size:26px;font-weight:900;color:#fff}
@@ -153,10 +153,8 @@
   <noscript><p>JavaScript is needed to show live scores.</p></noscript>
 
   <div class="stats">
-    <div class="stat"><div class="n" id="stPresent">0<small> / 20</small></div><div class="l">Present</div></div>
     <div class="stat"><div class="n" id="stPlayed">0<small> / 40</small></div><div class="l">Group matches done</div></div>
     <div class="stat"><div class="n" id="stKo">0<small> / 7</small></div><div class="l">Knockout done</div></div>
-    <div class="stat"><div class="n" id="stLeaders">—</div><div class="l">Group leaders</div></div>
   </div>
 
   <div class="champion" id="champion">
@@ -410,20 +408,13 @@ function render(state, mode) {
   });
   var ko = resolveKnockout(state.knockout, standings, doneGroups);
 
-  var present = state.attendance.filter(function (p) { return p.present; }).length;
   var played = 0;
   Object.keys(state.groups).forEach(function (g) {
     state.groups[g].matches.forEach(function (m) { if (matchWinner(m)) played++; });
   });
   var koDone = ko.list.filter(function (k) { return k.winner; }).length;
-  var leaders = ["A", "B", "C", "D"].map(function (g) {
-    return standings[g][0] && standings[g][0].pts > 0 ? standings[g][0].name.split(" ")[0] : "—";
-  }).join(" · ");
-
-  document.getElementById("stPresent").innerHTML = present + "<small> / 20</small>";
   document.getElementById("stPlayed").innerHTML = played + "<small> / 40</small>";
   document.getElementById("stKo").innerHTML = koDone + "<small> / 7</small>";
-  document.getElementById("stLeaders").textContent = leaders;
 
   var champ = ko.results["FINAL"] || null;
   var champEl = document.getElementById("champion");
