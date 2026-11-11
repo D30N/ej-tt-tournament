@@ -4,91 +4,97 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EJ's 7th Anniversary — Table Tennis Tournament | Live Points</title>
-<meta name="description" content="Live points, standings and knockout results of EJ's Fitness Club 7th Anniversary Table Tennis Tournament. Updates automatically from the points sheet.">
+<meta name="description" content="Live points, standings and knockout results of EJ's Fitness Club 7th Anniversary Table Tennis Tournament.">
 <style>
   :root{
-    --navy:#071a33; --navy2:#0a2540; --card:#0e2c4e; --card2:#123a63;
-    --gold:#ffd21f; --gold2:#f5b301; --ink:#eaf2fb; --muted:#9db4d0;
-    --line:rgba(255,255,255,.12); --green:#4ade80; --red:#f87171;
+    --navy:#071a33; --navy2:#0a2540; --card:#0e2c4e;
+    --gold:#ffd21f; --ink:#eaf2fb; --muted:#9db4d0;
+    --line:rgba(255,255,255,.12); --green:#4ade80;
     --ga:#ffd21f; --gb:#38bdf8; --gc:#4ade80; --gd:#f472b6;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:linear-gradient(180deg,#04101f,#071a33 30%,#0a2540);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    min-height:100vh;padding-bottom:48px}
+    min-height:100vh;padding-bottom:32px}
   a{color:var(--gold)}
-  .wrap{max-width:1060px;margin:0 auto;padding:0 14px}
+  .wrap{max-width:960px;margin:0 auto;padding:0 12px}
   /* ---------- header ---------- */
-  header{padding:26px 0 8px;text-align:center}
-  .club{color:var(--gold);font-weight:800;letter-spacing:.18em;font-size:12px;text-transform:uppercase}
-  h1{font-size:clamp(26px,6vw,44px);line-height:1.08;margin:8px 0 4px;font-weight:900}
+  header{padding:18px 0 10px;text-align:center}
+  .club{color:var(--gold);font-weight:800;letter-spacing:.18em;font-size:11px;text-transform:uppercase}
+  h1{font-size:clamp(22px,5vw,34px);line-height:1.15;margin:6px 0 4px;font-weight:900}
   h1 .tt{color:var(--gold)}
-  .sub{color:var(--muted);font-size:14px}
-  .sub.ml{font-size:15px;color:#cfe0f2;margin-top:2px}
-  .livebar{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin:16px 0 4px}
-  .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;
-    font-size:13px;font-weight:700;border:1px solid var(--line);background:rgba(255,255,255,.06)}
+  .sub{color:var(--muted);font-size:13px}
+  .livebar{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:12px}
+  .pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;
+    font-size:12px;font-weight:700;border:1px solid var(--line);background:rgba(255,255,255,.06)}
   .pill.live{border-color:#22c55e;background:rgba(34,197,94,.15);color:#86efac}
   .pill.live .dot{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulse 1.6s infinite}
   .pill.snap{border-color:#f59e0b;background:rgba(245,158,11,.14);color:#fcd34d}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}70%{box-shadow:0 0 0 7px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
   .pill button{background:none;border:0;color:inherit;font:inherit;cursor:pointer;text-decoration:underline}
   /* ---------- notice ---------- */
-  .notice{max-width:860px;margin:14px auto 0;padding:12px 14px;border-radius:12px;font-size:14px;line-height:1.5;
+  .notice{max-width:860px;margin:12px auto 0;padding:10px 12px;border-radius:10px;font-size:13px;line-height:1.5;
     background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.45);color:#fde68a;display:none}
   .notice.show{display:block}
   .notice b{color:#fff}
   /* ---------- summary ---------- */
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0 6px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0 0}
   @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
-  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 10px;text-align:center}
-  .stat .n{font-size:26px;font-weight:900;color:#fff}
-  .stat .n small{font-size:14px;color:var(--muted);font-weight:700}
-  .stat .l{font-size:12px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 8px;text-align:center}
+  .stat .n{font-size:22px;font-weight:900;color:#fff}
+  .stat .n small{font-size:13px;color:var(--muted);font-weight:700}
+  .stat .l{font-size:11px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
   /* ---------- champion ---------- */
-  .champion{display:none;margin:18px 0 4px;padding:22px 16px;text-align:center;border-radius:16px;
+  .champion{display:none;margin:14px 0 0;padding:16px;text-align:center;border-radius:14px;
     background:linear-gradient(135deg,#3a2a00,#7c5a00);border:1px solid var(--gold)}
   .champion.show{display:block}
-  .champion .t{font-size:13px;letter-spacing:.2em;color:var(--gold);font-weight:800}
-  .champion .w{font-size:clamp(24px,5vw,36px);font-weight:900;margin-top:6px}
-  /* ---------- sections ---------- */
-  section{margin-top:28px}
-  h2{font-size:20px;font-weight:900;display:flex;align-items:center;gap:10px;margin-bottom:4px}
-  h2 .bar{width:5px;height:22px;border-radius:3px;background:var(--gold);display:inline-block}
-  .hint{color:var(--muted);font-size:13px;margin-bottom:12px}
-  /* ---------- attendance ---------- */
-  .att-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-  @media(max-width:760px){.att-grid{grid-template-columns:repeat(2,1fr)}}
-  .att-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
-  .att-card h3{font-size:15px;display:flex;justify-content:space-between;align-items:center}
-  .att-card h3 .cnt{font-size:12px;color:var(--muted);font-weight:700}
-  .att-card ul{list-style:none;margin-top:8px}
-  .att-card li{padding:6px 2px;border-top:1px solid rgba(255,255,255,.06);font-size:14px;display:flex;gap:8px;align-items:center}
-  .att-card li:first-child{border-top:0}
-  .att-card li .mk{width:18px;text-align:center;flex:none}
-  .att-card li.here{color:#bbf7d0}
-  .att-card li.away{color:var(--muted)}
-  .att-card li.away .nm{text-decoration:line-through;text-decoration-color:rgba(255,255,255,.35)}
-  /* ---------- groups ---------- */
-  .groups{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media(max-width:760px){.groups{grid-template-columns:1fr}}
-  .gcard{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
-  .gcard .ghead{padding:12px 14px;font-weight:900;font-size:17px;display:flex;justify-content:space-between;align-items:center;color:#06121f}
-  .gcard.A .ghead{background:var(--ga)} .gcard.B .ghead{background:var(--gb)}
-  .gcard.C .ghead{background:var(--gc)} .gcard.D .ghead{background:var(--gd)}
-  .gcard .ghead .q{font-size:11px;font-weight:800;background:rgba(0,0,0,.18);padding:3px 8px;border-radius:999px}
-  table{width:100%;border-collapse:collapse;font-size:14px}
-  th,td{padding:8px 10px;text-align:left}
+  .champion .t{font-size:12px;letter-spacing:.2em;color:var(--gold);font-weight:800}
+  .champion .w{font-size:clamp(22px,5vw,32px);font-weight:900;margin-top:4px}
+  /* ---------- tabs ---------- */
+  .tabs{position:sticky;top:0;z-index:10;margin-top:16px;background:rgba(4,16,31,.96);
+    border-bottom:1px solid var(--line);padding:8px 0}
+  .tabs .row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+  .tabs .row::-webkit-scrollbar{display:none}
+  .tab{flex:none;padding:8px 14px;border-radius:999px;border:1px solid var(--line);
+    background:rgba(255,255,255,.05);color:var(--ink);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--gold);border-color:var(--gold);color:#06121f}
+  .panel{display:none;margin-top:16px}
+  .panel.active{display:block}
+  h2{font-size:18px;font-weight:900;margin-bottom:10px}
+  .hint{color:var(--muted);font-size:12px;margin:-6px 0 10px}
+  /* ---------- overview ---------- */
+  table{width:100%;border-collapse:collapse;font-size:14px;background:var(--card);
+    border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  th,td{padding:9px 10px;text-align:left}
   th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--line)}
   td{border-bottom:1px solid rgba(255,255,255,.06)}
   tr:last-child td{border-bottom:0}
   td.num,th.num{text-align:center}
   td.pts{font-weight:900;color:var(--gold)}
   tr.qual td{background:rgba(255,210,31,.09)}
-  tr.qual td:first-child{border-left:3px solid var(--gold)}
   .qbadge{font-size:10px;font-weight:800;color:#052e16;background:var(--green);border-radius:999px;padding:2px 7px;margin-left:6px;white-space:nowrap}
+  .gdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:middle}
+  /* ---------- attendance ---------- */
+  .att-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media(max-width:760px){.att-grid{grid-template-columns:repeat(2,1fr)}}
+  .att-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+  .att-card h3{font-size:14px;display:flex;justify-content:space-between;align-items:center}
+  .att-card h3 .cnt{font-size:12px;color:var(--muted);font-weight:700}
+  .att-card ul{list-style:none;margin-top:6px}
+  .att-card li{padding:6px 2px;border-top:1px solid rgba(255,255,255,.06);font-size:14px;display:flex;gap:8px;align-items:center}
+  .att-card li:first-child{border-top:0}
+  .att-card li .mk{width:18px;text-align:center;flex:none}
+  .att-card li.here{color:#bbf7d0}
+  .att-card li.away{color:var(--muted)}
+  .att-card li.away .nm{text-decoration:line-through;text-decoration-color:rgba(255,255,255,.35)}
+  /* ---------- group ---------- */
+  .gcard{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .gcard .ghead{padding:11px 14px;font-weight:900;font-size:16px;display:flex;justify-content:space-between;align-items:center;color:#06121f}
+  .gcard.A .ghead{background:var(--ga)} .gcard.B .ghead{background:var(--gb)}
+  .gcard.C .ghead{background:var(--gc)} .gcard.D .ghead{background:var(--gd)}
+  .gcard .ghead .q{font-size:11px;font-weight:800;background:rgba(0,0,0,.18);padding:3px 8px;border-radius:999px}
   .matches{padding:4px 14px 12px}
-  .matches h4{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px}
+  .matches h4{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 4px}
   .mrow{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid rgba(255,255,255,.06);font-size:14px}
   .mrow .no{color:var(--muted);font-size:12px;width:18px;flex:none}
   .mrow .p1{flex:1;text-align:right}
@@ -99,16 +105,17 @@
   .mrow .win{font-weight:800;color:#fff}
   .mrow .lose{color:var(--muted)}
   /* ---------- knockout ---------- */
-  .ko-round{margin-top:16px}
-  .ko-round h3{font-size:13px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;margin-bottom:10px}
+  .ko-round{margin-top:14px}
+  .ko-round:first-child{margin-top:0}
+  .ko-round h3{font-size:12px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
   .ko-grid{display:grid;gap:10px}
   .ko-grid.qf{grid-template-columns:repeat(4,1fr)}
   .ko-grid.sf{grid-template-columns:repeat(2,1fr);max-width:640px;margin:0 auto}
   .ko-grid.f{grid-template-columns:1fr;max-width:420px;margin:0 auto}
   @media(max-width:760px){.ko-grid.qf{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:420px){.ko-grid.qf{grid-template-columns:1fr}}
-  .kocard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
-  .kocard.final{border-color:var(--gold);background:linear-gradient(180deg,#123a63,#0e2c4e)}
+  .kocard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+  .kocard.final{border-color:var(--gold)}
   .kocard .mt{font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--muted)}
   .kocard .pl{font-size:15px;font-weight:700;padding:6px 0}
   .kocard .pl.win{color:var(--gold)}
@@ -117,9 +124,7 @@
   .kocard .sets{font-size:12px;color:var(--muted);margin-top:6px}
   .kocard .sets b{color:#fff}
   /* ---------- footer ---------- */
-  footer{margin-top:36px;text-align:center;color:var(--muted);font-size:13px;line-height:1.7}
-  footer .ml{color:#cfe0f2}
-  .refresh-note{font-size:12px;color:var(--muted);text-align:center;margin-top:8px}
+  footer{margin-top:28px;text-align:center;color:var(--muted);font-size:12px;line-height:1.7}
   noscript p{background:#7f1d1d;color:#fff;padding:12px;border-radius:10px;text-align:center;margin:16px 0}
 </style>
 </head>
@@ -127,62 +132,56 @@
 <div class="wrap">
 
   <header>
-    <div class="club">🏋️ EJ's Fitness Club</div>
-    <h1>EJ's 7th Anniversary<br><span class="tt">Table Tennis Tournament</span> 🏓</h1>
-    <p class="sub">20 players · 4 groups · 1 table · Group stage 1 set · Knockout Best of 3</p>
-    <p class="sub ml">തത്സമയ പോയിന്റ് നില — ഷീറ്റിൽ സ്കോർ അപ്ഡേറ്റ് ചെയ്യുമ്പോൾ ഇവിടെയും തനിയെ മാറും</p>
+    <div class="club">EJ's Fitness Club</div>
+    <h1>EJ's 7th Anniversary<br><span class="tt">Table Tennis Tournament</span></h1>
+    <p class="sub">20 players · 4 groups · Group stage 1 set · Knockout Best of 3</p>
     <div class="livebar">
       <span class="pill live" id="livePill"><span class="dot"></span><span id="liveText">Connecting…</span></span>
-      <span class="pill">🕒 <span id="updatedAt">—</span></span>
-      <span class="pill"><button id="refreshBtn" type="button">↻ Refresh now</button></span>
+      <span class="pill">Updated <span id="updatedAt">—</span></span>
+      <span class="pill"><button id="refreshBtn" type="button">↻ Refresh</button></span>
     </div>
   </header>
 
   <div class="notice" id="notice">
-    <b>Live scores ഇതുവരെ on ആയിട്ടില്ല.</b> താഴെ കാണുന്നത് ഷീറ്റിലെ fixture-ന്റെ saved copy ആണ്.
-    Live ആക്കാൻ: Points Sheet തുറന്ന് <b>Share → Anyone with the link can view</b> എന്നാക്കിയാൽ മതി —
-    പിന്നെ ഇവിടെ സ്കോർ അപ്ഡേറ്റ് ചെയ്യുമ്പോൾ 30 സെക്കൻഡിനുള്ളിൽ ഈ പേജിലും മാറും. മറ്റൊന്നും ചെയ്യണ്ട.
+    <b>Live scores are off.</b> Showing the saved fixture.
+    To turn live on: in the Points Sheet, <b>Share → Anyone with the link can view</b>.
+    Scores will then appear here within 30 seconds.
   </div>
 
-  <noscript><p>Live scores കാണാൻ JavaScript on ആക്കണം.</p></noscript>
+  <noscript><p>JavaScript is needed to show live scores.</p></noscript>
 
   <div class="stats">
     <div class="stat"><div class="n" id="stPresent">0<small> / 20</small></div><div class="l">Present</div></div>
-    <div class="stat"><div class="n" id="stPlayed">0<small> / 40</small></div><div class="l">Group matches done</div></div>
-    <div class="stat"><div class="n" id="stKo">0<small> / 7</small></div><div class="l">Knockout done</div></div>
+    <div class="stat"><div class="n" id="stPlayed">0<small> / 40</small></div><div class="l">Group matches</div></div>
+    <div class="stat"><div class="n" id="stKo">0<small> / 7</small></div><div class="l">Knockout</div></div>
     <div class="stat"><div class="n" id="stLeaders">—</div><div class="l">Group leaders</div></div>
   </div>
 
   <div class="champion" id="champion">
-    <div class="t">🏆 CHAMPION</div>
+    <div class="t">CHAMPION</div>
     <div class="w" id="championName"></div>
-    <div class="sub">EJ's 7th Anniversary Table Tennis Tournament</div>
   </div>
 
-  <section id="attendanceSec">
-    <h2><span class="bar"></span>Attendance · ഹാജർ</h2>
-    <p class="hint">ജിമ്മിൽ എത്തിയവർ ✅ — വരാത്തവരുടെ മത്സരങ്ങൾ നടക്കില്ല.</p>
-    <div class="att-grid" id="attGrid"></div>
-  </section>
+  <nav class="tabs" aria-label="Tournament sections">
+    <div class="row" id="tabRow">
+      <button class="tab" type="button" data-tab="overview" aria-selected="true">Overview</button>
+      <button class="tab" type="button" data-tab="attendance" aria-selected="false">Attendance</button>
+      <button class="tab" type="button" data-tab="group-A" aria-selected="false">Group A</button>
+      <button class="tab" type="button" data-tab="group-B" aria-selected="false">Group B</button>
+      <button class="tab" type="button" data-tab="group-C" aria-selected="false">Group C</button>
+      <button class="tab" type="button" data-tab="group-D" aria-selected="false">Group D</button>
+      <button class="tab" type="button" data-tab="knockout" aria-selected="false">Knockout</button>
+    </div>
+  </nav>
 
-  <section id="groupsSec">
-    <h2><span class="bar"></span>Group Stage · ഗ്രൂപ്പ് മത്സരങ്ങൾ</h2>
-    <p class="hint">ഓരോ ഗ്രൂപ്പിലും 10 മത്സരങ്ങൾ, 1 സെറ്റ് വീതം. Win = 1 point, Loss = 0. ഓരോ ഗ്രൂപ്പിലെയും ആദ്യ 2 പേർ Quarter Final-ലേക്ക്.</p>
-    <div class="groups" id="groupsGrid"></div>
-  </section>
-
-  <section id="koSec">
-    <h2><span class="bar"></span>Knockout Stage · നോക്കൗട്ട്</h2>
-    <p class="hint">Best of 3 sets — ആദ്യം 2 സെറ്റ് ജയിക്കുന്ന ആൾ അടുത്ത റൗണ്ടിലേക്ക്.</p>
-    <div id="koWrap"></div>
-  </section>
+  <div class="panel active" id="panel-overview"></div>
+  <div class="panel" id="panel-attendance"></div>
+  <div class="panel" id="panel-group"></div>
+  <div class="panel" id="panel-knockout"></div>
 
   <footer>
-    <p>Scores are updated in the <a id="sheetLink" href="https://docs.google.com/spreadsheets/d/1E0e8w_xMazE-wVQALac5DgkdXHWpSw_-asRvAdU0_hQ/edit" target="_blank" rel="noopener">Points Sheet</a> — this page refreshes itself every 30 seconds.</p>
-    <p class="ml">പോയിന്റ് ഷീറ്റിൽ സ്കോർ അടിച്ചാൽ ഈ പേജ് 30 സെക്കൻഡിൽ തനിയെ പുതുക്കും.</p>
-    <p>EJ's Fitness Club · 7th Anniversary · All the best to every player! 🏓</p>
+    <p>Scores are updated in the <a id="sheetLink" href="https://docs.google.com/spreadsheets/d/1E0e8w_xMazE-wVQALac5DgkdXHWpSw_-asRvAdU0_hQ/edit" target="_blank" rel="noopener">Points Sheet</a> · This page refreshes every 30 seconds · EJ's Fitness Club</p>
   </footer>
-  <p class="refresh-note" id="srcNote"></p>
 </div>
 
 <script>
@@ -225,7 +224,7 @@ var SNAPSHOT = {
   ]
 };
 
-/* ---------- pure helpers (also unit-tested in node) ---------- */
+/* ---------- pure helpers ---------- */
 function esc(s) {
   return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
     return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
@@ -344,7 +343,6 @@ function parseGroupTable(table) {
     }
   });
   matches.sort(function (a, b) { return a.n - b.n; });
-  /* player order = first appearance in the fixture */
   matches.forEach(function (m) {
     if (players.indexOf(m.p1) < 0) players.push(m.p1);
     if (players.indexOf(m.p2) < 0) players.push(m.p2);
@@ -382,43 +380,63 @@ function fetchLiveState() {
   });
 }
 
+/* ---------- tabs ---------- */
+var TABS = ["overview", "attendance", "group-A", "group-B", "group-C", "group-D", "knockout"];
+var GROUP_COLOR = { A: "#ffd21f", B: "#38bdf8", C: "#4ade80", D: "#f472b6" };
+var activeTab = "overview";
+var currentState = null;
+var currentMode = "snapshot";
+
+function setTab(tab, pushHash) {
+  if (TABS.indexOf(tab) < 0) tab = "overview";
+  activeTab = tab;
+  var btns = document.querySelectorAll("#tabRow .tab");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].setAttribute("aria-selected", btns[i].getAttribute("data-tab") === tab ? "true" : "false");
+  }
+  var panels = { overview: "panel-overview", attendance: "panel-attendance", knockout: "panel-knockout" };
+  document.getElementById("panel-overview").classList.toggle("active", tab === "overview");
+  document.getElementById("panel-attendance").classList.toggle("active", tab === "attendance");
+  document.getElementById("panel-knockout").classList.toggle("active", tab === "knockout");
+  document.getElementById("panel-group").classList.toggle("active", tab.indexOf("group-") === 0);
+  if (pushHash && typeof history !== "undefined" && history.replaceState) {
+    history.replaceState(null, "", "#" + tab);
+  }
+  if (currentState) renderPanel(currentState);
+}
+function tabFromHash() {
+  if (typeof location === "undefined") return "overview";
+  var h = (location.hash || "").replace(/^#/, "");
+  return TABS.indexOf(h) >= 0 ? h : "overview";
+}
+
 /* ---------- rendering ---------- */
 function fmtTime(d) {
   try {
     return d.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
   } catch (e) { return d.toLocaleTimeString(); }
 }
-function render(state, mode) {
+function computeAll(state) {
   var standings = {};
   ["A", "B", "C", "D"].forEach(function (g) {
     standings[g] = groupStandings(state.groups[g].players, state.groups[g].matches);
   });
-  var ko = resolveKnockout(state.knockout, standings);
-
-  var present = state.attendance.filter(function (p) { return p.present; }).length;
-  var played = 0;
-  Object.keys(state.groups).forEach(function (g) {
-    state.groups[g].matches.forEach(function (m) { if (matchWinner(m)) played++; });
-  });
-  var koDone = ko.list.filter(function (k) { return k.winner; }).length;
-  var leaders = ["A", "B", "C", "D"].map(function (g) {
-    return standings[g][0] && standings[g][0].pts > 0 ? standings[g][0].name.split(" ")[0] : "—";
-  }).join(" · ");
-
-  document.getElementById("stPresent").innerHTML = present + "<small> / 20</small>";
-  document.getElementById("stPlayed").innerHTML = played + "<small> / 40</small>";
-  document.getElementById("stKo").innerHTML = koDone + "<small> / 7</small>";
-  document.getElementById("stLeaders").textContent = leaders;
-
-  var champ = ko.results["FINAL"] || null;
-  var champEl = document.getElementById("champion");
-  if (champ) {
-    document.getElementById("championName").textContent = "🏆 " + champ;
-    champEl.classList.add("show");
-  } else champEl.classList.remove("show");
-
-  /* attendance */
-  var attHtml = ["A", "B", "C", "D"].map(function (g) {
+  return { standings: standings, ko: resolveKnockout(state.knockout, standings) };
+}
+function renderOverview(state, c) {
+  var rows = ["A", "B", "C", "D"].map(function (g) {
+    var st = c.standings[g];
+    var played = state.groups[g].matches.filter(function (m) { return matchWinner(m); }).length;
+    var first = st[0] ? esc(st[0].name) : "—";
+    var second = st[1] ? esc(st[1].name) : "—";
+    return "<tr><td><span class=\"gdot\" style=\"background:" + GROUP_COLOR[g] + "\"></span>Group " + g +
+      "</td><td>" + first + "</td><td>" + second + '</td><td class="num">' + played + " / 10</td></tr>";
+  }).join("");
+  return "<h2>Overview</h2><p class=\"hint\">Top 2 in each group qualify for the Quarter Finals. Win = 1 point, Loss = 0.</p>" +
+    "<table><tr><th>Group</th><th>1st</th><th>2nd</th><th class=\"num\">Matches</th></tr>" + rows + "</table>";
+}
+function renderAttendance(state) {
+  var cards = ["A", "B", "C", "D"].map(function (g) {
     var members = state.attendance.filter(function (p) { return p.group === g; });
     var here = members.filter(function (p) { return p.present; }).length;
     var items = members.map(function (p) {
@@ -428,68 +446,100 @@ function render(state, mode) {
     return '<div class="att-card"><h3>Group ' + g + ' <span class="cnt">' + here + " / " + members.length +
       ' present</span></h3><ul>' + items + "</ul></div>";
   }).join("");
-  document.getElementById("attGrid").innerHTML = attHtml;
-
-  /* groups */
-  var gHtml = ["A", "B", "C", "D"].map(function (g) {
-    var grp = state.groups[g];
-    var st = standings[g];
-    var rows = st.map(function (r, i) {
-      return "<tr" + (i < 2 ? ' class="qual"' : "") + "><td>" + (i + 1) + ". " + esc(r.name) +
-        (i < 2 ? '<span class="qbadge">QF ✓</span>' : "") + "</td>" +
-        '<td class="num">' + r.played + '</td><td class="num">' + r.won + '</td><td class="num">' + r.lost +
-        '</td><td class="num pts">' + r.pts + "</td></tr>";
-    }).join("");
-    var mrows = grp.matches.map(function (m) {
-      var w = matchWinner(m);
-      var cls1 = w ? (w === m.p1 ? "win" : "lose") : "";
-      var cls2 = w ? (w === m.p2 ? "win" : "lose") : "";
-      var sc = m.score ? esc(m.score) : "vs";
-      return '<div class="mrow"><span class="no">' + m.n + '</span><span class="p1 ' + cls1 + '">' + esc(m.p1) +
-        '</span><span class="sc' + (m.score ? "" : " pending") + '">' + sc + '</span><span class="p2 ' + cls2 + '">' +
-        esc(m.p2) + "</span></div>";
-    }).join("");
-    return '<div class="gcard ' + g + '"><div class="ghead"><span>Group ' + g +
-      '</span><span class="q">TOP 2 → QF</span></div>' +
-      '<table><tr><th>Player</th><th class="num">P</th><th class="num">W</th><th class="num">L</th><th class="num">Pts</th></tr>' +
-      rows + '</table><div class="matches"><h4>Matches · 1 set each</h4>' + mrows + "</div></div>";
+  return "<h2>Attendance</h2><div class=\"att-grid\">" + cards + "</div>";
+}
+function renderGroup(state, c, g) {
+  var grp = state.groups[g];
+  var st = c.standings[g];
+  var rows = st.map(function (r, i) {
+    return "<tr" + (i < 2 ? ' class="qual"' : "") + "><td>" + (i + 1) + ". " + esc(r.name) +
+      (i < 2 ? '<span class="qbadge">QF ✓</span>' : "") + "</td>" +
+      '<td class="num">' + r.played + '</td><td class="num">' + r.won + '</td><td class="num">' + r.lost +
+      '</td><td class="num pts">' + r.pts + "</td></tr>";
   }).join("");
-  document.getElementById("groupsGrid").innerHTML = gHtml;
-
-  /* knockout */
-  function koCard(k, isFinal) {
-    var sets = koSetsWon(k.sets);
-    var playedSets = k.sets.filter(function (s) { return parseSetScore(s); })
-      .map(function (s) { return esc(s); }).join(" · ");
-    var c1 = k.winner ? (k.winner === k.p1 ? "win" : "dim") : "";
-    var c2 = k.winner ? (k.winner === k.p2 ? "win" : "dim") : "";
-    return '<div class="kocard' + (isFinal ? " final" : "") + '"><div class="mt">' + esc(k.match) + "</div>" +
-      '<div class="pl ' + c1 + '">' + esc(k.p1) + "</div>" +
-      '<div class="vs">VS</div>' +
-      '<div class="pl ' + c2 + '">' + esc(k.p2) + "</div>" +
-      '<div class="sets">' + (playedSets ? "Sets <b>" + sets[0] + " – " + sets[1] + "</b> · " + playedSets
-        : (k.winner ? "Winner: <b>" + esc(k.winner) + "</b>" : "Not started")) + "</div></div>";
-  }
-  var qf = ko.list.filter(function (k) { return k.match.indexOf("QF") === 0; });
-  var sf = ko.list.filter(function (k) { return k.match.indexOf("SF") === 0; });
-  var f = ko.list.filter(function (k) { return k.match === "FINAL"; });
-  document.getElementById("koWrap").innerHTML =
+  var mrows = grp.matches.map(function (m) {
+    var w = matchWinner(m);
+    var cls1 = w ? (w === m.p1 ? "win" : "lose") : "";
+    var cls2 = w ? (w === m.p2 ? "win" : "lose") : "";
+    var sc = m.score ? esc(m.score) : "vs";
+    return '<div class="mrow"><span class="no">' + m.n + '</span><span class="p1 ' + cls1 + '">' + esc(m.p1) +
+      '</span><span class="sc' + (m.score ? "" : " pending") + '">' + sc + '</span><span class="p2 ' + cls2 + '">' +
+      esc(m.p2) + "</span></div>";
+  }).join("");
+  return '<div class="gcard ' + g + '"><div class="ghead"><span>Group ' + g +
+    '</span><span class="q">TOP 2 → QF</span></div>' +
+    '<table><tr><th>Player</th><th class="num">P</th><th class="num">W</th><th class="num">L</th><th class="num">Pts</th></tr>' +
+    rows + '</table><div class="matches"><h4>Matches · 1 set each</h4>' + mrows + "</div></div>";
+}
+function koCard(k, isFinal) {
+  var sets = koSetsWon(k.sets);
+  var playedSets = k.sets.filter(function (s) { return parseSetScore(s); })
+    .map(function (s) { return esc(s); }).join(" · ");
+  var c1 = k.winner ? (k.winner === k.p1 ? "win" : "dim") : "";
+  var c2 = k.winner ? (k.winner === k.p2 ? "win" : "dim") : "";
+  return '<div class="kocard' + (isFinal ? " final" : "") + '"><div class="mt">' + esc(k.match) + "</div>" +
+    '<div class="pl ' + c1 + '">' + esc(k.p1) + "</div>" +
+    '<div class="vs">VS</div>' +
+    '<div class="pl ' + c2 + '">' + esc(k.p2) + "</div>" +
+    '<div class="sets">' + (playedSets ? "Sets <b>" + sets[0] + " – " + sets[1] + "</b> · " + playedSets
+      : "Not started") + "</div></div>";
+}
+function renderKnockout(state, c) {
+  var qf = c.ko.list.filter(function (k) { return k.match.indexOf("QF") === 0; });
+  var sf = c.ko.list.filter(function (k) { return k.match.indexOf("SF") === 0; });
+  var f = c.ko.list.filter(function (k) { return k.match === "FINAL"; });
+  return "<h2>Knockout</h2><p class=\"hint\">Best of 3 sets — first to 2 sets wins the match.</p>" +
     '<div class="ko-round"><h3>Quarter Finals</h3><div class="ko-grid qf">' + qf.map(function (k) { return koCard(k); }).join("") + "</div></div>" +
     '<div class="ko-round"><h3>Semi Finals</h3><div class="ko-grid sf">' + sf.map(function (k) { return koCard(k); }).join("") + "</div></div>" +
     '<div class="ko-round"><h3>Final</h3><div class="ko-grid f">' + f.map(function (k) { return koCard(k, true); }).join("") + "</div></div>";
+}
+function renderPanel(state) {
+  var c = computeAll(state);
+  if (activeTab === "overview") document.getElementById("panel-overview").innerHTML = renderOverview(state, c);
+  else if (activeTab === "attendance") document.getElementById("panel-attendance").innerHTML = renderAttendance(state);
+  else if (activeTab === "knockout") document.getElementById("panel-knockout").innerHTML = renderKnockout(state, c);
+  else if (activeTab.indexOf("group-") === 0) {
+    var g = activeTab.slice(-1);
+    document.getElementById("panel-group").innerHTML = renderGroup(state, c, g);
+  }
+}
+function render(state, mode) {
+  currentState = state;
+  currentMode = mode;
+  var c = computeAll(state);
+  var present = state.attendance.filter(function (p) { return p.present; }).length;
+  var played = 0;
+  Object.keys(state.groups).forEach(function (g) {
+    state.groups[g].matches.forEach(function (m) { if (matchWinner(m)) played++; });
+  });
+  var koDone = c.ko.list.filter(function (k) { return k.winner; }).length;
+  var leaders = ["A", "B", "C", "D"].map(function (g) {
+    return c.standings[g][0] && c.standings[g][0].pts > 0 ? c.standings[g][0].name.split(" ")[0] : "—";
+  }).join(" · ");
 
-  /* status */
+  document.getElementById("stPresent").innerHTML = present + "<small> / 20</small>";
+  document.getElementById("stPlayed").innerHTML = played + "<small> / 40</small>";
+  document.getElementById("stKo").innerHTML = koDone + "<small> / 7</small>";
+  document.getElementById("stLeaders").textContent = leaders;
+
+  var champ = c.ko.results["FINAL"] || null;
+  var champEl = document.getElementById("champion");
+  if (champ) {
+    document.getElementById("championName").textContent = "🏆 " + champ;
+    champEl.classList.add("show");
+  } else champEl.classList.remove("show");
+
+  renderPanel(state);
+
   var pill = document.getElementById("livePill");
   if (mode === "live") {
     pill.classList.remove("snap"); pill.classList.add("live");
-    document.getElementById("liveText").textContent = "● LIVE — auto-refresh 30s";
+    document.getElementById("liveText").textContent = "● LIVE";
     document.getElementById("notice").classList.remove("show");
-    document.getElementById("srcNote").textContent = "Live from the Points Sheet · " + fmtTime(new Date());
   } else {
     pill.classList.add("snap"); pill.classList.remove("live");
-    document.getElementById("liveText").textContent = "Snapshot — live not on yet";
+    document.getElementById("liveText").textContent = "Snapshot — live off";
     document.getElementById("notice").classList.add("show");
-    document.getElementById("srcNote").textContent = "Showing saved fixture — turn on link sharing in the sheet for live scores.";
   }
   document.getElementById("updatedAt").textContent = fmtTime(new Date());
 }
@@ -508,6 +558,11 @@ function load(showLoading) {
 if (typeof document !== "undefined") {
   document.getElementById("sheetLink").href = SHEET_URL;
   document.getElementById("refreshBtn").addEventListener("click", function () { load(true); });
+  var tabBtns = document.querySelectorAll("#tabRow .tab");
+  for (var i = 0; i < tabBtns.length; i++) {
+    tabBtns[i].addEventListener("click", function () { setTab(this.getAttribute("data-tab"), true); });
+  }
+  setTab(tabFromHash(), false);
   load(true);
   setInterval(function () { load(false); }, REFRESH_MS);
   document.addEventListener("visibilitychange", function () {
@@ -518,7 +573,7 @@ if (typeof module !== "undefined") {
   module.exports = { parseSetScore: parseSetScore, matchWinner: matchWinner, groupStandings: groupStandings,
     koSetsWon: koSetsWon, koWinner: koWinner, resolveSlot: resolveSlot, resolveKnockout: resolveKnockout,
     parseAttendanceTable: parseAttendanceTable, parseGroupTable: parseGroupTable,
-    parseKnockoutTable: parseKnockoutTable, SNAPSHOT: SNAPSHOT };
+    parseKnockoutTable: parseKnockoutTable, SNAPSHOT: SNAPSHOT, TABS: TABS, tabFromHash: tabFromHash };
 }
 </script>
 </body>
