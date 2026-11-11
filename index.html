@@ -363,9 +363,11 @@ function parseKnockoutTable(table) {
   (table.rows || []).forEach(function (row) {
     var match = String(cell(row, 0)).trim().toUpperCase();
     if (!/^(QF [1-4]|SF [1-2]|FINAL)$/.test(match)) return;
+    var p1 = String(cell(row, 1)).trim();
+    if (!p1) return; /* skip section title rows (e.g. the "FINAL" heading has no players) */
     out.push({
       match: match,
-      p1: String(cell(row, 1)).trim(),
+      p1: p1,
       sets: [String(cell(row, 2)).trim(), String(cell(row, 3)).trim(), String(cell(row, 4)).trim()],
       p2: String(cell(row, 5)).trim()
     });
