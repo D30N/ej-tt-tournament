@@ -147,7 +147,7 @@
   <div class="notice" id="notice">
     <b>Live scores are off.</b> Showing the saved fixture.
     To turn live on: in the Points Sheet, <b>Share → Anyone with the link can view</b>.
-    Scores will then appear here within 30 seconds.
+    Scores will then appear here within 15 seconds.
   </div>
 
   <noscript><p>JavaScript is needed to show live scores.</p></noscript>
@@ -182,7 +182,7 @@
   </section>
 
   <footer>
-    <p>Scores are updated in the <a id="sheetLink" href="https://docs.google.com/spreadsheets/d/1E0e8w_xMazE-wVQALac5DgkdXHWpSw_-asRvAdU0_hQ/edit" target="_blank" rel="noopener">Points Sheet</a> - this page refreshes itself every 30 seconds.</p>
+    <p>Scores are updated in the <a id="sheetLink" href="https://docs.google.com/spreadsheets/d/1E0e8w_xMazE-wVQALac5DgkdXHWpSw_-asRvAdU0_hQ/edit" target="_blank" rel="noopener">Points Sheet</a> - this page refreshes itself every 15 seconds.</p>
     <p>© <a href="https://deepakdeon.in" target="_blank" rel="noopener">Deepak Deon</a></p>
   </footer>
   <p class="refresh-note" id="srcNote"></p>
@@ -192,12 +192,12 @@
 "use strict";
 /* ============================================================
    EJ's 7th Anniversary TT Tournament — live points page
-   Source of truth: Google Sheet (gviz JSON, public link view)
+   Source of truth: Google Sheet via the EJ TT Live Scores Apps Script web app (live JSON)
    Fallback: embedded snapshot of the fixture (scores blank)
    ============================================================ */
 var SHEET_ID = "1E0e8w_xMazE-wVQALac5DgkdXHWpSw_-asRvAdU0_hQ";
 var SHEET_URL = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/edit";
-var REFRESH_MS = 30000;
+var REFRESH_MS = 15000;
 
 /* ---------- snapshot: fixture exactly as in the sheet ---------- */
 var SNAPSHOT = {
@@ -310,18 +310,14 @@ function resolveKnockout(ko, standings, doneGroups) {
   return { list: out, results: results };
 }
 
-/* ---------- gviz fetch ---------- */
-function gviz(sheet) {
-  var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID +
-    "/gviz/tq?tqx=out:json&headers=1&sheet=" + encodeURIComponent(sheet);
-  return fetch(url).then(function (r) { return r.text(); }).then(function (txt) {
-    var start = txt.indexOf("{");
-    var end = txt.lastIndexOf("}");
-    if (start < 0 || end < 0) throw new Error("not gviz json");
-    var data = JSON.parse(txt.slice(start, end + 1));
-    if (data.status === "error") throw new Error(data.errors && data.errors[0] ? data.errors[0].detailed_message : "gviz error");
-    return data.table;
-  });
+/* ---------- live feed (Apps Script web app, reads the sheet live) ---------- */
+var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw21IeXEYWmtUBDc8mldU-5JjbJ8FRoeWKXXtCag-rMth27pL1z8r-pMYnePosWt8EYVw/exec";
+function valuesToTable(values) {
+  return {
+    rows: (values || []).map(function (r) {
+      return { c: r.map(function (v) { return { v: v }; }) };
+    })
+  };
 }
 function cell(row, i) {
   if (!row || !row.c || !row.c[i]) return "";
@@ -379,15 +375,17 @@ function parseKnockoutTable(table) {
   return out;
 }
 function fetchLiveState() {
-  return Promise.all([
-    gviz("Attendance"), gviz("Group A"), gviz("Group B"), gviz("Group C"), gviz("Group D"), gviz("Knockout")
-  ]).then(function (t) {
-    var att = parseAttendanceTable(t[0]);
+  return fetch(APPS_SCRIPT_URL).then(function (r) {
+    if (!r.ok) throw new Error("feed HTTP " + r.status);
+    return r.json();
+  }).then(function (data) {
+    var t = data.tabs || {};
+    var att = parseAttendanceTable(valuesToTable(t["Attendance"]));
     var groups = {
-      A: parseGroupTable(t[1]), B: parseGroupTable(t[2]),
-      C: parseGroupTable(t[3]), D: parseGroupTable(t[4])
+      A: parseGroupTable(valuesToTable(t["Group A"])), B: parseGroupTable(valuesToTable(t["Group B"])),
+      C: parseGroupTable(valuesToTable(t["Group C"])), D: parseGroupTable(valuesToTable(t["Group D"]))
     };
-    var ko = parseKnockoutTable(t[5]);
+    var ko = parseKnockoutTable(valuesToTable(t["Knockout"]));
     if (!att.length || !groups.A.players.length || !ko.length) throw new Error("empty sheet");
     return { attendance: att, groups: groups, knockout: ko };
   });
@@ -492,14 +490,14 @@ function render(state, mode) {
   var pill = document.getElementById("livePill");
   if (mode === "live") {
     pill.classList.remove("snap"); pill.classList.add("live");
-    document.getElementById("liveText").textContent = "● LIVE — auto-refresh 30s";
+    document.getElementById("liveText").textContent = "● LIVE — auto-refresh 15s";
     document.getElementById("notice").classList.remove("show");
     document.getElementById("srcNote").textContent = "Live from the Points Sheet · " + fmtTime(new Date());
   } else {
     pill.classList.add("snap"); pill.classList.remove("live");
     document.getElementById("liveText").textContent = "Snapshot — live not on yet";
     document.getElementById("notice").classList.add("show");
-    document.getElementById("srcNote").textContent = "Showing saved fixture — turn on link sharing in the sheet for live scores.";
+    document.getElementById("srcNote").textContent = "Showing saved fixture — live scores are unavailable right now.";
   }
 }
 
