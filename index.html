@@ -87,11 +87,14 @@
   tr.qual td:first-child{border-left:3px solid var(--gold)}
   .qbadge{font-size:10px;font-weight:800;color:#052e16;background:var(--green);border-radius:999px;padding:2px 7px;margin-left:6px;white-space:nowrap}
   .matches{padding:6px 14px 12px}
-  .matches details summary{cursor:pointer;list-style:none;font-size:12px;color:var(--muted);
-    text-transform:uppercase;letter-spacing:.06em;font-weight:700;padding:8px 0 2px}
+  .matches details summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;
+    align-items:center;font-size:13px;color:var(--gold);font-weight:800;
+    background:rgba(255,210,31,.14);border:1px solid rgba(255,210,31,.5);
+    border-radius:9px;padding:9px 12px;margin:8px 0 2px;
+    text-transform:uppercase;letter-spacing:.06em}
   .matches details summary::-webkit-details-marker{display:none}
-  .matches details summary::before{content:"▸ ";color:var(--gold)}
-  .matches details[open ] summary::before{content:"▾ ";color:var(--gold)}
+  .matches details summary::after{content:"▸";color:var(--gold);font-size:16px;line-height:1}
+  .matches details[open ] summary::after{content:"▾";color:var(--gold)}
   .mrow{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid rgba(255,255,255,.06);font-size:14px}
   .mrow .no{color:var(--muted);font-size:12px;width:18px;flex:none}
   .mrow .p1{flex:1;text-align:right}
