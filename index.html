@@ -86,8 +86,12 @@
   tr.qual td{background:rgba(255,210,31,.09)}
   tr.qual td:first-child{border-left:3px solid var(--gold)}
   .qbadge{font-size:10px;font-weight:800;color:#052e16;background:var(--green);border-radius:999px;padding:2px 7px;margin-left:6px;white-space:nowrap}
-  .matches{padding:4px 14px 12px}
-  .matches h4{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px}
+  .matches{padding:6px 14px 12px}
+  .matches details summary{cursor:pointer;list-style:none;font-size:12px;color:var(--muted);
+    text-transform:uppercase;letter-spacing:.06em;font-weight:700;padding:8px 0 2px}
+  .matches details summary::-webkit-details-marker{display:none}
+  .matches details summary::before{content:"▸ ";color:var(--gold)}
+  .matches details[open ] summary::before{content:"▾ ";color:var(--gold)}
   .mrow{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid rgba(255,255,255,.06);font-size:14px}
   .mrow .no{color:var(--muted);font-size:12px;width:18px;flex:none}
   .mrow .p1{flex:1;text-align:right}
@@ -456,10 +460,12 @@ function render(state, mode) {
         '</span><span class="sc' + (m.score ? "" : " pending") + '">' + sc + '</span><span class="p2 ' + cls2 + '">' +
         esc(m.p2) + "</span></div>";
     }).join("");
+    var playedCount = grp.matches.filter(function (m) { return matchWinner(m); }).length;
     return '<div class="gcard ' + g + '"><div class="ghead"><span>Group ' + g +
       '</span><span class="q">TOP 2 → QF</span></div>' +
       '<table><tr><th>Player</th><th class="num">P</th><th class="num">W</th><th class="num">L</th><th class="num">Pts</th></tr>' +
-      rows + '</table><div class="matches"><h4>Matches · 1 set each</h4>' + mrows + "</div></div>";
+      rows + '</table><div class="matches"><details><summary>Matches · ' + playedCount +
+      '/10 played</summary>' + mrows + "</details></div></div>";
   }).join("");
   document.getElementById("groupsGrid").innerHTML = gHtml;
 
