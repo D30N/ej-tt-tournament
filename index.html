@@ -33,7 +33,7 @@
   .pill.live .dot{width:8px;height:8px;border-radius:50%;background:#ef4444;animation:pulse 1.6s infinite}
   .pill.snap{border-color:#f59e0b;background:rgba(245,158,11,.14);color:#fcd34d}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.6)}70%{box-shadow:0 0 0 7px rgba(239,68,68,0)}100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}}
-  .pill button{background:none;border:0;color:inherit;font:inherit;cursor:pointer;text-decoration:underline}
+  .autorf{font-size:12px;color:var(--muted)}
   /* ---------- notice ---------- */
   .notice{max-width:860px;margin:14px auto 0;padding:12px 14px;border-radius:12px;font-size:14px;line-height:1.5;
     background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.45);color:#fde68a;display:none}
@@ -140,7 +140,7 @@
     <p class="sub">20 players · 4 groups · Knockouts.</p>
     <div class="livebar">
       <span class="pill live" id="livePill"><span class="dot"></span><span id="liveText">Connecting…</span></span>
-      <span class="pill"><button id="refreshBtn" type="button">↻ Refresh</button></span>
+      <div class="autorf">Auto refresh 15s</div>
     </div>
   </header>
 
@@ -490,7 +490,7 @@ function render(state, mode) {
   var pill = document.getElementById("livePill");
   if (mode === "live") {
     pill.classList.remove("snap"); pill.classList.add("live");
-    document.getElementById("liveText").textContent = "● LIVE — auto-refresh 15s";
+    document.getElementById("liveText").textContent = "LIVE";
     document.getElementById("notice").classList.remove("show");
     document.getElementById("srcNote").textContent = "Live from the Points Sheet · " + fmtTime(new Date());
   } else {
@@ -514,7 +514,6 @@ function load(showLoading) {
 }
 if (typeof document !== "undefined") {
   document.getElementById("sheetLink").href = SHEET_URL;
-  document.getElementById("refreshBtn").addEventListener("click", function () { load(true); });
   load(true);
   setInterval(function () { load(false); }, REFRESH_MS);
   document.addEventListener("visibilitychange", function () {
