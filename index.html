@@ -182,7 +182,7 @@
 
   <section id="groupsSec">
     <h2><span class="bar"></span>Group Stage</h2>
-    <p class="hint">10 matches per group, 1 set each. Win = 1 point, Loss = 0. Top 2 in each group go to the Quarter Finals.</p>
+    <p class="hint">10 matches per group, 1 set each. Win = 1 point, Loss = 0. Top 2 in each group go to the Quarter Finals. Tied on points? Points difference (points won − points lost) decides.</p>
     <div class="groups" id="groupsGrid"></div>
   </section>
 
@@ -262,18 +262,25 @@ function groupDone(matches) {
 }
 function groupStandings(players, matches) {
   var t = {};
-  players.forEach(function (p, i) { t[p] = { name: p, order: i, played: 0, won: 0, lost: 0, pts: 0 }; });
+  players.forEach(function (p, i) { t[p] = { name: p, order: i, played: 0, won: 0, lost: 0, pts: 0, forPts: 0, againstPts: 0, diff: 0 }; });
   matches.forEach(function (m) {
+    var s = parseSetScore(m.score);
     var w = matchWinner(m);
     if (!w) return;
     var l = w === m.p1 ? m.p2 : m.p1;
     if (t[m.p1]) t[m.p1].played++;
     if (t[m.p2]) t[m.p2].played++;
+    /* points difference from the set score (e.g. 11-7): points won minus points lost */
+    if (s) {
+      t[m.p1].forPts += s[0]; t[m.p1].againstPts += s[1];
+      t[m.p2].forPts += s[1]; t[m.p2].againstPts += s[0];
+    }
     t[w].won++; t[w].pts += 1;
     t[l].lost++;
   });
+  players.forEach(function (p) { t[p].diff = t[p].forPts - t[p].againstPts; });
   return players.map(function (p) { return t[p]; }).sort(function (a, b) {
-    return (b.pts - a.pts) || (a.order - b.order); /* tie: first in list order */
+    return (b.pts - a.pts) || (b.diff - a.diff) || (a.order - b.order); /* tie: points difference, then list order */
   });
 }
 function koSetsWon(sets) {
@@ -455,7 +462,7 @@ function render(state, mode) {
       return "<tr" + (qual ? ' class="qual"' : "") + "><td>" + (i + 1) + ". " + esc(r.name) +
         (qual ? '<span class="qbadge">QF ✓</span>' : "") + "</td>" +
         '<td class="num">' + r.played + '</td><td class="num">' + r.won + '</td><td class="num">' + r.lost +
-        '</td><td class="num pts">' + r.pts + "</td></tr>";
+        '</td><td class="num">' + (r.diff > 0 ? "+" + r.diff : r.diff) + '</td><td class="num pts">' + r.pts + "</td></tr>";
     }).join("");
     var mrows = grp.matches.map(function (m) {
       var w = matchWinner(m);
@@ -469,7 +476,7 @@ function render(state, mode) {
     var playedCount = grp.matches.filter(function (m) { return matchWinner(m); }).length;
     return '<div class="gcard ' + g + '"><div class="ghead"><span>Group ' + g +
       '</span><span class="q">TOP 2 → QF</span></div>' +
-      '<table><tr><th>Player</th><th class="num">P</th><th class="num">W</th><th class="num">L</th><th class="num">Pts</th></tr>' +
+      '<table><tr><th>Player</th><th class="num">P</th><th class="num">W</th><th class="num">L</th><th class="num">Diff</th><th class="num">Pts</th></tr>' +
       rows + '</table><div class="matches"><details><summary>Matches · ' + playedCount +
       '/10 played</summary>' + mrows + "</details></div></div>";
   }).join("");
