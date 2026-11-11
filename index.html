@@ -484,7 +484,17 @@ function render(state, mode) {
       rows + '</table><div class="matches"><details><summary>Matches · ' + playedCount +
       '/10 played</summary>' + mrows + "</details></div></div>";
   }).join("");
+  /* keep open Matches menus open across the 15s refresh (re-render wipes the DOM) */
+  var openGroups = {};
+  document.querySelectorAll("#groupsGrid .gcard details").forEach(function (d) {
+    var card = d.closest(".gcard");
+    if (d.open && card) openGroups[card.classList[1]] = true;
+  });
   document.getElementById("groupsGrid").innerHTML = gHtml;
+  document.querySelectorAll("#groupsGrid .gcard details").forEach(function (d) {
+    var card = d.closest(".gcard");
+    if (card && openGroups[card.classList[1]]) d.open = true;
+  });
 
   /* knockout */
   function koCard(k, isFinal) {
