@@ -462,7 +462,7 @@ function render(state, mode) {
       return "<tr" + (qual ? ' class="qual"' : "") + "><td>" + (i + 1) + ". " + esc(r.name) +
         (qual ? '<span class="qbadge">QF ✓</span>' : "") + "</td>" +
         '<td class="num">' + r.played + '</td><td class="num">' + r.won + '</td><td class="num">' + r.lost +
-        '</td><td class="num">' + (r.diff > 0 ? "+" + r.diff : r.diff) + '</td><td class="num pts">' + r.pts + "</td></tr>";
+        '</td><td class="num pts">' + r.pts + '</td><td class="num">' + (r.diff > 0 ? "+" + r.diff : r.diff) + "</td></tr>";
     }).join("");
     var mrows = grp.matches.map(function (m) {
       var w = matchWinner(m);
@@ -476,7 +476,7 @@ function render(state, mode) {
     var playedCount = grp.matches.filter(function (m) { return matchWinner(m); }).length;
     return '<div class="gcard ' + g + '"><div class="ghead"><span>Group ' + g +
       '</span><span class="q">TOP 2 → QF</span></div>' +
-      '<table><tr><th>Player</th><th class="num">P</th><th class="num">W</th><th class="num">L</th><th class="num">Diff</th><th class="num">Pts</th></tr>' +
+      '<table><tr><th>Player</th><th class="num">P</th><th class="num">W</th><th class="num">L</th><th class="num">Pts</th><th class="num">Diff</th></tr>' +
       rows + '</table><div class="matches"><details><summary>Matches · ' + playedCount +
       '/10 played</summary>' + mrows + "</details></div></div>";
   }).join("");
