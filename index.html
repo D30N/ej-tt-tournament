@@ -504,6 +504,12 @@ function render(state, mode) {
     document.getElementById("liveText").textContent = "LIVE";
     document.getElementById("notice").classList.remove("show");
     document.getElementById("srcNote").textContent = "Live from the Points Sheet · " + fmtTime(new Date());
+  } else if (mode === "loading") {
+    /* fixture shown instantly while the live feed is still on its way */
+    pill.classList.remove("snap"); pill.classList.add("live");
+    document.getElementById("liveText").textContent = "Connecting…";
+    document.getElementById("notice").classList.remove("show");
+    document.getElementById("srcNote").textContent = "Loading live scores…";
   } else {
     pill.classList.add("snap"); pill.classList.remove("live");
     document.getElementById("liveText").textContent = "Snapshot — live not on yet";
@@ -525,6 +531,7 @@ function load(showLoading) {
 }
 if (typeof document !== "undefined") {
   document.getElementById("sheetLink").href = SHEET_URL;
+  render(SNAPSHOT, "loading");
   load(true);
   setInterval(function () { load(false); }, REFRESH_MS);
   document.addEventListener("visibilitychange", function () {
