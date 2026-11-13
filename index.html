@@ -167,9 +167,8 @@
   </header>
 
   <div class="notice" id="notice">
-    <b>Live scores are off.</b> Showing the saved fixture.
-    To turn live on: in the Points Sheet, <b>Share → Anyone with the link can view</b>.
-    Scores will then appear here within 15 seconds.
+    <b>Live scores are taking a moment to load.</b> Showing the saved fixture for now.
+    They will appear here automatically once the connection is back.
   </div>
 
   <noscript><p>JavaScript is needed to show live scores.</p></noscript>
@@ -549,9 +548,9 @@ function render(state, mode) {
     document.getElementById("srcNote").textContent = "Loading live scores…";
   } else {
     pill.classList.add("snap"); pill.classList.remove("live");
-    document.getElementById("liveText").textContent = "Snapshot — live not on yet";
+    document.getElementById("liveText").textContent = "Reconnecting…";
     document.getElementById("notice").classList.add("show");
-    document.getElementById("srcNote").textContent = "Showing saved fixture — live scores are unavailable right now.";
+    document.getElementById("srcNote").textContent = "Showing saved fixture — live scores will appear automatically.";
   }
 }
 
@@ -597,12 +596,17 @@ function updatePill() {
 
 /* ---------- boot + auto-refresh ---------- */
 var lastGood = null;
-function load(showLoading) {
+function load(showLoading, retries) {
   if (showLoading) document.getElementById("liveText").textContent = "Connecting…";
   return fetchLiveState().then(function (state) {
     lastGood = state;
     render(state, "live");
   }).catch(function () {
+    /* One retry before falling back to the saved fixture, so a single slow
+       fetch does not flash the notice. */
+    if ((retries || 0) < 1) {
+      return new Promise(function (res) { setTimeout(res, 2000); }).then(function () { return load(false, (retries || 0) + 1); });
+    }
     render(lastGood || SNAPSHOT, "snapshot");
   });
 }
