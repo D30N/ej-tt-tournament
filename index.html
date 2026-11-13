@@ -323,9 +323,13 @@ function resolveSlot(slot, standings, koResults, doneGroups) {
 /* Build knockout names + winners in dependency order (QF -> SF -> F). */
 function resolveKnockout(ko, standings, doneGroups) {
   var results = {};
+  /* QF slots are fixed by the draw; never trust names from the sheet until the group is done. */
+  var qfSlots = { "QF 1": ["Group A 1st", "Group B 2nd"], "QF 2": ["Group B 1st", "Group A 2nd"], "QF 3": ["Group C 1st", "Group D 2nd"], "QF 4": ["Group D 1st", "Group C 2nd"] };
   var out = ko.map(function (k) {
-    var p1 = resolveSlot(k.p1, standings, results, doneGroups);
-    var p2 = resolveSlot(k.p2, standings, results, doneGroups);
+    var p1 = k.p1, p2 = k.p2;
+    if (qfSlots[k.match]) { p1 = qfSlots[k.match][0]; p2 = qfSlots[k.match][1]; }
+    p1 = resolveSlot(p1, standings, results, doneGroups);
+    p2 = resolveSlot(p2, standings, results, doneGroups);
     var done = { match: k.match, p1: p1, p2: p2, sets: k.sets.slice() };
     var w = koWinner(done);
     done.winner = w;
