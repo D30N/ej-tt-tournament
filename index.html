@@ -67,6 +67,19 @@
   .champion.show{display:block}
   .champion .t{font-size:13px;letter-spacing:.2em;color:var(--gold);font-weight:800}
   .champion .w{font-size:clamp(24px,5vw,36px);font-weight:900;margin-top:6px}
+  /* ---------- champion box (below Final, only after the Final is won) ---------- */
+  .champbox{margin-top:18px;padding:26px 16px 24px;text-align:center;border-radius:16px;position:relative;overflow:hidden;
+    background:radial-gradient(ellipse at 50% 0%,#3a2f10 0%,#12233d 55%,#0e1a30 100%);
+    border:2px solid var(--gold);box-shadow:0 0 32px rgba(255,210,31,.25)}
+  .champbox .trophy{animation:pop 1.6s ease-in-out infinite;display:inline-block}
+  @keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+  .champbox .cf{position:absolute;top:0;width:8px;height:12px;border-radius:2px;animation:cfall 3.2s linear infinite}
+  @keyframes cfall{0%{transform:translateY(-12px) rotate(0deg);opacity:1}80%{opacity:1}100%{transform:translateY(220px) rotate(340deg);opacity:0}}
+  .champbox .cong{color:var(--gold);font-weight:800;letter-spacing:3px;font-size:18px;margin-top:8px}
+  .champbox .lbl{color:var(--muted);font-size:13px;letter-spacing:2px;margin-top:16px}
+  .champbox .cname{font-size:30px;font-weight:800;color:#fff;margin-top:4px}
+  .champbox .div{width:64px;height:1px;background:var(--gold);opacity:.6;margin:18px auto}
+  .champbox .rname{font-size:19px;font-weight:700;color:#a7f3d0;margin-top:4px}
   /* ---------- sections ---------- */
   section{margin-top:28px}
   h2{font-size:20px;font-weight:900;display:flex;align-items:center;gap:10px;margin-bottom:4px}
@@ -227,7 +240,7 @@ var SNAPSHOT = {
   attendance: [
     ["Yadhukrishnan K","A"],["Madhav Anil","A"],["Dinil Dev","A"],["Alvin Avarachan","A"],["Adhil A Pillai","A"],
     ["Ebin Joseph","B"],["John Mathew","B"],["Anandu PT","B"],["Harikrishan MV","B"],["Aswin Krishna","B"],
-    ["Sahil Rahman","C"],["Brickson Jacob","C"],["Bibin Joseph","C"],["Deepak KP","C"],["Arun Prakash","C"],
+    ["Sahil Rahman","C"],["Brickson Jacob","C"],["Bibin Joseph","C"],["Deon","C"],["Arun Prakash","C"],
     ["Vishnudev PS","D"],["Alain Thampan","D"],["Alwin Shanmughan","D"],["Rajeesh AP","D"],["Akshay Sabu","D"]
   ].map(function (r) { return { name: r[0], group: r[1], present: true }; }),
   groups: {
@@ -235,8 +248,8 @@ var SNAPSHOT = {
       matches: [["Yadhukrishnan K","Madhav Anil"],["Yadhukrishnan K","Dinil Dev"],["Yadhukrishnan K","Alvin Avarachan"],["Yadhukrishnan K","Adhil A Pillai"],["Madhav Anil","Dinil Dev"],["Madhav Anil","Alvin Avarachan"],["Madhav Anil","Adhil A Pillai"],["Dinil Dev","Alvin Avarachan"],["Dinil Dev","Adhil A Pillai"],["Alvin Avarachan","Adhil A Pillai"]].map(function (m, i) { return { n: i + 1, p1: m[0], score: "", p2: m[1] }; }) },
     B: { players: ["Ebin Joseph","John Mathew","Anandu PT","Harikrishan MV","Aswin Krishna"],
       matches: [["Ebin Joseph","John Mathew"],["Ebin Joseph","Anandu PT"],["Ebin Joseph","Harikrishan MV"],["Ebin Joseph","Aswin Krishna"],["John Mathew","Anandu PT"],["John Mathew","Harikrishan MV"],["John Mathew","Aswin Krishna"],["Anandu PT","Harikrishan MV"],["Anandu PT","Aswin Krishna"],["Harikrishan MV","Aswin Krishna"]].map(function (m, i) { return { n: i + 1, p1: m[0], score: "", p2: m[1] }; }) },
-    C: { players: ["Sahil Rahman","Brickson Jacob","Bibin Joseph","Deepak KP","Arun Prakash"],
-      matches: [["Sahil Rahman","Brickson Jacob"],["Sahil Rahman","Bibin Joseph"],["Sahil Rahman","Deepak KP"],["Sahil Rahman","Arun Prakash"],["Brickson Jacob","Bibin Joseph"],["Brickson Jacob","Deepak KP"],["Brickson Jacob","Arun Prakash"],["Bibin Joseph","Deepak KP"],["Bibin Joseph","Arun Prakash"],["Deepak KP","Arun Prakash"]].map(function (m, i) { return { n: i + 1, p1: m[0], score: "", p2: m[1] }; }) },
+    C: { players: ["Sahil Rahman","Brickson Jacob","Bibin Joseph","Deon","Arun Prakash"],
+      matches: [["Sahil Rahman","Brickson Jacob"],["Sahil Rahman","Bibin Joseph"],["Sahil Rahman","Deon"],["Sahil Rahman","Arun Prakash"],["Brickson Jacob","Bibin Joseph"],["Brickson Jacob","Deon"],["Brickson Jacob","Arun Prakash"],["Bibin Joseph","Deon"],["Bibin Joseph","Arun Prakash"],["Deon","Arun Prakash"]].map(function (m, i) { return { n: i + 1, p1: m[0], score: "", p2: m[1] }; }) },
     D: { players: ["Vishnudev PS","Alain Thampan","Alwin Shanmughan","Rajeesh AP","Akshay Sabu"],
       matches: [["Vishnudev PS","Alain Thampan"],["Vishnudev PS","Alwin Shanmughan"],["Vishnudev PS","Rajeesh AP"],["Vishnudev PS","Akshay Sabu"],["Alain Thampan","Alwin Shanmughan"],["Alain Thampan","Rajeesh AP"],["Alain Thampan","Akshay Sabu"],["Alwin Shanmughan","Rajeesh AP"],["Alwin Shanmughan","Akshay Sabu"],["Rajeesh AP","Akshay Sabu"]].map(function (m, i) { return { n: i + 1, p1: m[0], score: "", p2: m[1] }; }) }
   },
@@ -527,10 +540,42 @@ function render(state, mode) {
   var qf = ko.list.filter(function (k) { return k.match.indexOf("QF") === 0; });
   var sf = ko.list.filter(function (k) { return k.match.indexOf("SF") === 0; });
   var f = ko.list.filter(function (k) { return k.match === "FINAL"; });
+  /* Champion + runner-up box below the Final card: only once the Final has a winner. */
+  var TROPHY_SVG = '<svg width="112" height="112" viewBox="0 0 120 120" role="img" aria-label="Gold trophy">' +
+    '<defs><linearGradient id="tgold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe97a"/><stop offset=".5" stop-color="#f7c948"/><stop offset="1" stop-color="#d97706"/></linearGradient></defs>' +
+    '<path d="M28 22 C8 22 6 44 26 52" fill="none" stroke="url(#tgold)" stroke-width="7" stroke-linecap="round"/>' +
+    '<path d="M92 22 C112 22 114 44 94 52" fill="none" stroke="url(#tgold)" stroke-width="7" stroke-linecap="round"/>' +
+    '<path d="M30 14 h60 v18 c0 22 -12 34 -30 34 c-18 0 -30 -12 -30 -34 z" fill="url(#tgold)"/>' +
+    '<polygon points="60,24 63,31 70,31 64.5,35.5 66.5,42.5 60,38.5 53.5,42.5 55.5,35.5 50,31 57,31" fill="#fff7cc"/>' +
+    '<rect x="55" y="66" width="10" height="18" fill="url(#tgold)"/>' +
+    '<path d="M40 88 h40 l6 12 h-52 z" fill="url(#tgold)"/>' +
+    '<rect x="30" y="100" width="60" height="8" rx="3" fill="url(#tgold)"/></svg>';
+  var fin = f[0];
+  var champBoxHtml = "";
+  if (fin && fin.winner) {
+    var runnerUp = fin.winner === fin.p1 ? fin.p2 : fin.p1;
+    champBoxHtml = '<div class="champbox">' +
+      '<span class="cf" style="left:6%;background:#ffd21f"></span>' +
+      '<span class="cf" style="left:14%;background:#f472b6;animation-delay:.7s;height:8px;width:8px;border-radius:50%"></span>' +
+      '<span class="cf" style="left:24%;background:#4ade80;animation-delay:1.4s"></span>' +
+      '<span class="cf" style="left:34%;background:#38bdf8;animation-delay:.3s;height:8px;width:8px;border-radius:50%"></span>' +
+      '<span class="cf" style="left:46%;background:#f97316;animation-delay:2s"></span>' +
+      '<span class="cf" style="left:56%;background:#ffd21f;animation-delay:1s;height:8px;width:8px;border-radius:50%"></span>' +
+      '<span class="cf" style="left:66%;background:#a78bfa;animation-delay:.5s"></span>' +
+      '<span class="cf" style="left:76%;background:#4ade80;animation-delay:1.8s;height:8px;width:8px;border-radius:50%"></span>' +
+      '<span class="cf" style="left:86%;background:#f472b6;animation-delay:.9s"></span>' +
+      '<span class="cf" style="left:94%;background:#38bdf8;animation-delay:2.4s"></span>' +
+      '<div class="trophy">' + TROPHY_SVG + '</div>' +
+      '<div class="cong">CONGRATULATIONS</div>' +
+      '<div class="lbl">CHAMPION</div><div class="cname">' + esc(fin.winner) + '</div>' +
+      '<div class="div"></div>' +
+      '<div class="lbl">RUNNER UP</div><div class="rname">' + esc(runnerUp) + '</div></div>';
+  }
   document.getElementById("koWrap").innerHTML =
     '<div class="ko-round"><h3>Quarter Finals</h3><div class="ko-grid qf">' + qf.map(function (k) { return koCard(k); }).join("") + "</div></div>" +
     '<div class="ko-round"><h3>Semi Finals</h3><div class="ko-grid sf">' + sf.map(function (k) { return koCard(k); }).join("") + "</div></div>" +
-    '<div class="ko-round"><h3>Final</h3><div class="ko-grid f">' + f.map(function (k) { return koCard(k, true); }).join("") + "</div></div>";
+    '<div class="ko-round"><h3>Final</h3><div class="ko-grid f">' + f.map(function (k) { return koCard(k, true); }).join("") + "</div></div>" +
+    champBoxHtml;
 
   /* status */
   var pill = document.getElementById("livePill");
