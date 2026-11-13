@@ -74,6 +74,11 @@
   .hint{color:var(--muted);font-size:13px;margin-bottom:12px}
   /* ---------- attendance ---------- */
   .att-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  #attDetails summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:700;color:var(--gold);background:rgba(255,210,31,.08);border:1px solid rgba(255,210,31,.35);border-radius:10px;padding:10px 12px}
+  #attDetails summary::-webkit-details-marker{display:none}
+  #attDetails summary::after{content:"▸";color:var(--gold);font-size:16px;line-height:1}
+  #attDetails[open ] summary::after{content:"▾";color:var(--gold)}
+  #attDetails .att-grid{margin-top:10px}
   @media(max-width:760px){.att-grid{grid-template-columns:repeat(2,1fr)}}
   .att-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
   .att-card h3{font-size:15px;display:flex;justify-content:space-between;align-items:center}
@@ -183,7 +188,7 @@
   <section id="attendanceSec">
     <h2><span class="bar"></span>Attendance</h2>
     <p class="hint">Players who have arrived ✅ — matches of absent players are not played.</p>
-    <div class="att-grid" id="attGrid"></div>
+    <details id="attDetails"><summary><span id="attSummary">20 / 20 present</span></summary><div class="att-grid" id="attGrid"></div></details>
   </section>
 
   <section id="groupsSec">
@@ -462,6 +467,8 @@ function render(state, mode) {
     return '<div class="att-card"><h3>Group ' + g + ' <span class="cnt">' + here + " / " + members.length +
       ' present</span></h3><ul>' + items + "</ul></div>";
   }).join("");
+  var attTotal = state.attendance.filter(function (p) { return p.present; }).length;
+  document.getElementById("attSummary").textContent = attTotal + " / " + state.attendance.length + " present";
   document.getElementById("attGrid").innerHTML = attHtml;
 
   /* groups */
