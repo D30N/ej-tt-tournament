@@ -139,8 +139,6 @@
   .kocard .vs{font-size:11px;color:var(--muted);font-weight:800}
   .kocard .sets{font-size:12px;color:var(--muted);margin-top:6px}
   .kocard .sets b{color:#fff}
-  .ko-countdown{display:none;text-align:center;font-weight:800;font-size:15px;color:var(--gold);margin:4px 0 10px}
-  .ko-countdown.live{color:var(--green)}
   /* ---------- footer ---------- */
   footer{margin-top:36px;text-align:center;color:var(--muted);font-size:13px;line-height:1.7}
   .refresh-note{font-size:12px;color:var(--muted);text-align:center;margin-top:8px}
@@ -197,7 +195,6 @@
   <section id="koSec">
     <h2><span class="bar"></span>Knockout Stage</h2>
     <p class="hint">Best of 3 sets — first to 2 sets wins the match.</p>
-    <p class="ko-countdown" id="koCountdown"></p>
     <div id="koWrap"></div>
   </section>
 
@@ -528,17 +525,13 @@ function render(state, mode) {
     '<div class="ko-round"><h3>Quarter Finals</h3><div class="ko-grid qf">' + qf.map(function (k) { return koCard(k); }).join("") + "</div></div>" +
     '<div class="ko-round"><h3>Semi Finals</h3><div class="ko-grid sf">' + sf.map(function (k) { return koCard(k); }).join("") + "</div></div>" +
     '<div class="ko-round"><h3>Final</h3><div class="ko-grid f">' + f.map(function (k) { return koCard(k, true); }).join("") + "</div></div>";
-  window.__koDone = ko.list.length === 7 && ko.list.every(function (k) { return !!k.winner; });
-  updateKoCountdown();
 
   /* status */
   var pill = document.getElementById("livePill");
+  window.__liveMode = (mode === "live");
   if (mode === "live") {
     pill.classList.remove("snap");
-    var koText = knockoutPillText();
-    if (koText === "LIVE") { pill.classList.add("live"); pill.classList.remove("ko"); }
-    else { pill.classList.remove("live"); pill.classList.add("ko"); }
-    document.getElementById("liveText").textContent = koText;
+    updatePill();
     document.getElementById("notice").classList.remove("show");
     document.getElementById("srcNote").textContent = "Live from the Points Sheet · " + fmtTime(new Date());
   } else if (mode === "loading") {
@@ -555,36 +548,44 @@ function render(state, mode) {
   }
 }
 
-/* ---------- knockout countdown: Nov 14, 5pm-7pm ---------- */
-/* Knockouts start Sat Nov 14, 2026 7:00 PM IST. From 5:00 PM show a ticking
-   countdown; from 7:00 PM show LIVE. Hidden before 5 PM and once a champion
-   is decided. Times carry an explicit +05:30 offset, so any viewer timezone works. */
+/* ---------- knockout pill: start note, countdown, LIVE in one pill ---------- */
+/* Knockouts start Sat Nov 14, 2026 7:00 PM IST. The header pill rotates
+   between the start-time note and the ticking countdown from 5:00 PM; from
+   7:00 PM it is LIVE. Rotation phase is time-based (4s per message) so the
+   15s refresh never resets it. Times carry an explicit +05:30 offset, so
+   any viewer timezone works. */
 var KO_COUNT_FROM = new Date("2026-11-14T17:00:00+05:30").getTime();
 var KO_START = new Date("2026-11-14T19:00:00+05:30").getTime();
 var KO_DAY_START = new Date("2026-11-14T00:00:00+05:30").getTime();
-/* Header pill: no match is live before the knockouts, so say when they start
-   instead of LIVE; from 7 PM it goes back to LIVE. */
+/* Header pill before the knockouts: say when they start instead of LIVE. */
 function knockoutPillText() {
   var now = Date.now();
   if (now >= KO_START) return "LIVE";
   return now < KO_DAY_START ? "Knockouts from tomorrow 7 PM" : "Knockouts from today 7 PM";
 }
-function updateKoCountdown() {
-  var el = document.getElementById("koCountdown");
-  if (!el) return;
-  var now = Date.now();
-  if (window.__koDone || now < KO_COUNT_FROM) { el.style.display = "none"; return; }
-  el.style.display = "block";
-  if (now >= KO_START) {
-    el.textContent = "● LIVE";
-    el.classList.add("live");
-    return;
-  }
-  el.classList.remove("live");
+function pillCountdownText(now) {
+  if (now < KO_COUNT_FROM || now >= KO_START) return null;
   var s = Math.floor((KO_START - now) / 1000);
   var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
   var t = h > 0 ? h + "h " + m + "m " + sec + "s" : (m > 0 ? m + "m " + sec + "s" : sec + "s");
-  el.textContent = "Knockouts start in " + t;
+  return "Knockouts start in " + t;
+}
+function updatePill() {
+  if (!window.__liveMode) return;
+  var pill = document.getElementById("livePill");
+  var txt = document.getElementById("liveText");
+  if (!pill || !txt) return;
+  var now = Date.now();
+  var msg;
+  if (now >= KO_START) { msg = "LIVE"; }
+  else {
+    var cd = pillCountdownText(now);
+    var msgs = cd ? [knockoutPillText(), cd] : [knockoutPillText()];
+    msg = msgs[Math.floor(now / 4000) % msgs.length];
+  }
+  if (msg === "LIVE") { pill.classList.add("live"); pill.classList.remove("ko"); }
+  else { pill.classList.remove("live"); pill.classList.add("ko"); }
+  txt.textContent = msg;
 }
 
 /* ---------- boot + auto-refresh ---------- */
@@ -603,8 +604,8 @@ if (typeof document !== "undefined") {
   render(SNAPSHOT, "loading");
   load(true);
   setInterval(function () { load(false); }, REFRESH_MS);
-  updateKoCountdown();
-  setInterval(updateKoCountdown, 1000);
+  updatePill();
+  setInterval(updatePill, 1000);
   document.addEventListener("visibilitychange", function () {
     if (!document.hidden) load(false);
   });
