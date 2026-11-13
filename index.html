@@ -46,6 +46,7 @@
   .pill.live{border-color:#ef4444;background:rgba(239,68,68,.15);color:#fca5a5}
   .pill.live .dot{width:8px;height:8px;border-radius:50%;background:#ef4444;animation:pulse 1.6s infinite}
   .pill.snap{border-color:#f59e0b;background:rgba(245,158,11,.14);color:#fcd34d}
+  .pill.ko{border-color:#38bdf8;background:rgba(56,189,248,.14);color:#bae6fd}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.6)}70%{box-shadow:0 0 0 7px rgba(239,68,68,0)}100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}}
   .autorf{font-size:12px;color:var(--muted)}
   /* ---------- notice ---------- */
@@ -533,8 +534,11 @@ function render(state, mode) {
   /* status */
   var pill = document.getElementById("livePill");
   if (mode === "live") {
-    pill.classList.remove("snap"); pill.classList.add("live");
-    document.getElementById("liveText").textContent = "LIVE";
+    pill.classList.remove("snap");
+    var koText = knockoutPillText();
+    if (koText === "LIVE") { pill.classList.add("live"); pill.classList.remove("ko"); }
+    else { pill.classList.remove("live"); pill.classList.add("ko"); }
+    document.getElementById("liveText").textContent = koText;
     document.getElementById("notice").classList.remove("show");
     document.getElementById("srcNote").textContent = "Live from the Points Sheet · " + fmtTime(new Date());
   } else if (mode === "loading") {
@@ -557,6 +561,14 @@ function render(state, mode) {
    is decided. Times carry an explicit +05:30 offset, so any viewer timezone works. */
 var KO_COUNT_FROM = new Date("2026-11-14T17:00:00+05:30").getTime();
 var KO_START = new Date("2026-11-14T19:00:00+05:30").getTime();
+var KO_DAY_START = new Date("2026-11-14T00:00:00+05:30").getTime();
+/* Header pill: no match is live before the knockouts, so say when they start
+   instead of LIVE; from 7 PM it goes back to LIVE. */
+function knockoutPillText() {
+  var now = Date.now();
+  if (now >= KO_START) return "LIVE";
+  return now < KO_DAY_START ? "Knockouts from tomorrow 7 PM" : "Knockouts from today 7 PM";
+}
 function updateKoCountdown() {
   var el = document.getElementById("koCountdown");
   if (!el) return;
