@@ -175,7 +175,7 @@
     <p class="sub">20 players · 4 groups · Knockouts.</p>
     <div class="livebar">
       <span class="pill live" id="livePill"><span class="dot"></span><span id="liveText">Connecting…</span></span>
-      <div class="autorf">Auto refresh 15s</div>
+      <div class="autorf">Final results</div>
     </div>
   </header>
 
@@ -216,7 +216,7 @@
   </section>
 
   <footer>
-    <p>Scores are updated in the <a id="sheetLink" href="https://docs.google.com/spreadsheets/d/1E0e8w_xMazE-wVQALac5DgkdXHWpSw_-asRvAdU0_hQ/edit" target="_blank" rel="noopener">Points Sheet</a> - this page refreshes itself every 15 seconds.</p>
+    <p>Final results from the <a id="sheetLink" href="https://docs.google.com/spreadsheets/d/1E0e8w_xMazE-wVQALac5DgkdXHWpSw_-asRvAdU0_hQ/edit" target="_blank" rel="noopener">Points Sheet</a> \u00b7 EJ 7th Anniversary Table Tennis Tournament.</p>
     <p>© <a href="https://deepakdeon.in" target="_blank" rel="noopener">Deepak Deon</a></p>
   </footer>
   <p class="refresh-note" id="srcNote"></p>
@@ -237,30 +237,465 @@ var REFRESH_MS = 15000;
 
 /* ---------- snapshot: fixture exactly as in the sheet ---------- */
 var SNAPSHOT = {
-  attendance: [
-    ["Yadhukrishnan K","A"],["Madhav Anil","A"],["Dinil Dev","A"],["Alvin Avarachan","A"],["Adhil A Pillai","A"],
-    ["Ebin Joseph","B"],["John Mathew","B"],["Anandu PT","B"],["Harikrishan MV","B"],["Aswin Krishna","B"],
-    ["Sahil Rahman","C"],["Brickson Jacob","C"],["Bibin Joseph","C"],["Deon","C"],["Arun Prakash","C"],
-    ["Vishnudev PS","D"],["Alain Thampan","D"],["Alwin Shanmughan","D"],["Rajeesh AP","D"],["Akshay Sabu","D"]
-  ].map(function (r) { return { name: r[0], group: r[1], present: true }; }),
-  groups: {
-    A: { players: ["Yadhukrishnan K","Madhav Anil","Dinil Dev","Alvin Avarachan","Adhil A Pillai"],
-      matches: [["Yadhukrishnan K","Madhav Anil"],["Yadhukrishnan K","Dinil Dev"],["Yadhukrishnan K","Alvin Avarachan"],["Yadhukrishnan K","Adhil A Pillai"],["Madhav Anil","Dinil Dev"],["Madhav Anil","Alvin Avarachan"],["Madhav Anil","Adhil A Pillai"],["Dinil Dev","Alvin Avarachan"],["Dinil Dev","Adhil A Pillai"],["Alvin Avarachan","Adhil A Pillai"]].map(function (m, i) { return { n: i + 1, p1: m[0], score: "", p2: m[1] }; }) },
-    B: { players: ["Ebin Joseph","John Mathew","Anandu PT","Harikrishan MV","Aswin Krishna"],
-      matches: [["Ebin Joseph","John Mathew"],["Ebin Joseph","Anandu PT"],["Ebin Joseph","Harikrishan MV"],["Ebin Joseph","Aswin Krishna"],["John Mathew","Anandu PT"],["John Mathew","Harikrishan MV"],["John Mathew","Aswin Krishna"],["Anandu PT","Harikrishan MV"],["Anandu PT","Aswin Krishna"],["Harikrishan MV","Aswin Krishna"]].map(function (m, i) { return { n: i + 1, p1: m[0], score: "", p2: m[1] }; }) },
-    C: { players: ["Sahil Rahman","Brickson Jacob","Bibin Joseph","Deon","Arun Prakash"],
-      matches: [["Sahil Rahman","Brickson Jacob"],["Sahil Rahman","Bibin Joseph"],["Sahil Rahman","Deon"],["Sahil Rahman","Arun Prakash"],["Brickson Jacob","Bibin Joseph"],["Brickson Jacob","Deon"],["Brickson Jacob","Arun Prakash"],["Bibin Joseph","Deon"],["Bibin Joseph","Arun Prakash"],["Deon","Arun Prakash"]].map(function (m, i) { return { n: i + 1, p1: m[0], score: "", p2: m[1] }; }) },
-    D: { players: ["Vishnudev PS","Alain Thampan","Alwin Shanmughan","Rajeesh AP","Akshay Sabu"],
-      matches: [["Vishnudev PS","Alain Thampan"],["Vishnudev PS","Alwin Shanmughan"],["Vishnudev PS","Rajeesh AP"],["Vishnudev PS","Akshay Sabu"],["Alain Thampan","Alwin Shanmughan"],["Alain Thampan","Rajeesh AP"],["Alain Thampan","Akshay Sabu"],["Alwin Shanmughan","Rajeesh AP"],["Alwin Shanmughan","Akshay Sabu"],["Rajeesh AP","Akshay Sabu"]].map(function (m, i) { return { n: i + 1, p1: m[0], score: "", p2: m[1] }; }) }
+  "attendance": [
+    {
+      "name": "Yadhukrishnan K",
+      "group": "A",
+      "present": true
+    },
+    {
+      "name": "Madhav Anil",
+      "group": "A",
+      "present": true
+    },
+    {
+      "name": "Dinil Dev",
+      "group": "A",
+      "present": true
+    },
+    {
+      "name": "Alvin Avarachan",
+      "group": "A",
+      "present": true
+    },
+    {
+      "name": "Adhil A Pillai",
+      "group": "A",
+      "present": true
+    },
+    {
+      "name": "Ebin Joseph",
+      "group": "B",
+      "present": true
+    },
+    {
+      "name": "John Mathew",
+      "group": "B",
+      "present": true
+    },
+    {
+      "name": "Anandu PT",
+      "group": "B",
+      "present": true
+    },
+    {
+      "name": "Harikrishan MV",
+      "group": "B",
+      "present": true
+    },
+    {
+      "name": "Aswin Krishna",
+      "group": "B",
+      "present": true
+    },
+    {
+      "name": "Sahil Rahman",
+      "group": "C",
+      "present": true
+    },
+    {
+      "name": "Brickson Jacob",
+      "group": "C",
+      "present": true
+    },
+    {
+      "name": "Bibin Joseph",
+      "group": "C",
+      "present": true
+    },
+    {
+      "name": "Deon",
+      "group": "C",
+      "present": true
+    },
+    {
+      "name": "Arun Prakash",
+      "group": "C",
+      "present": true
+    },
+    {
+      "name": "Vishnudev PS",
+      "group": "D",
+      "present": true
+    },
+    {
+      "name": "Alain Thampan",
+      "group": "D",
+      "present": true
+    },
+    {
+      "name": "Alwin Shanmughan",
+      "group": "D",
+      "present": true
+    },
+    {
+      "name": "Rajeesh AP",
+      "group": "D",
+      "present": true
+    },
+    {
+      "name": "Akshay Sabu",
+      "group": "D",
+      "present": true
+    }
+  ],
+  "groups": {
+    "A": {
+      "players": [
+        "Yadhukrishnan K",
+        "Madhav Anil",
+        "Dinil Dev",
+        "Alvin Avarachan",
+        "Adhil A Pillai"
+      ],
+      "matches": [
+        {
+          "n": 1,
+          "p1": "Yadhukrishnan K",
+          "score": "6-11",
+          "p2": "Madhav Anil"
+        },
+        {
+          "n": 2,
+          "p1": "Yadhukrishnan K",
+          "score": "12-10",
+          "p2": "Dinil Dev"
+        },
+        {
+          "n": 3,
+          "p1": "Yadhukrishnan K",
+          "score": "11-7",
+          "p2": "Alvin Avarachan"
+        },
+        {
+          "n": 4,
+          "p1": "Yadhukrishnan K",
+          "score": "11-6",
+          "p2": "Adhil A Pillai"
+        },
+        {
+          "n": 5,
+          "p1": "Madhav Anil",
+          "score": "11-6",
+          "p2": "Dinil Dev"
+        },
+        {
+          "n": 6,
+          "p1": "Madhav Anil",
+          "score": "11-4",
+          "p2": "Alvin Avarachan"
+        },
+        {
+          "n": 7,
+          "p1": "Madhav Anil",
+          "score": "11-1",
+          "p2": "Adhil A Pillai"
+        },
+        {
+          "n": 8,
+          "p1": "Dinil Dev",
+          "score": "11-4",
+          "p2": "Alvin Avarachan"
+        },
+        {
+          "n": 9,
+          "p1": "Dinil Dev",
+          "score": "11-8",
+          "p2": "Adhil A Pillai"
+        },
+        {
+          "n": 10,
+          "p1": "Alvin Avarachan",
+          "score": "11-3",
+          "p2": "Adhil A Pillai"
+        }
+      ]
+    },
+    "B": {
+      "players": [
+        "Ebin Joseph",
+        "John Mathew",
+        "Anandu PT",
+        "Harikrishan MV",
+        "Aswin Krishna"
+      ],
+      "matches": [
+        {
+          "n": 1,
+          "p1": "Ebin Joseph",
+          "score": "11-3",
+          "p2": "John Mathew"
+        },
+        {
+          "n": 2,
+          "p1": "Ebin Joseph",
+          "score": "11-3",
+          "p2": "Anandu PT"
+        },
+        {
+          "n": 3,
+          "p1": "Ebin Joseph",
+          "score": "8-11",
+          "p2": "Harikrishan MV"
+        },
+        {
+          "n": 4,
+          "p1": "Ebin Joseph",
+          "score": "7-11",
+          "p2": "Aswin Krishna"
+        },
+        {
+          "n": 5,
+          "p1": "John Mathew",
+          "score": "8-11",
+          "p2": "Anandu PT"
+        },
+        {
+          "n": 6,
+          "p1": "John Mathew",
+          "score": "5-11",
+          "p2": "Harikrishan MV"
+        },
+        {
+          "n": 7,
+          "p1": "John Mathew",
+          "score": "12-10",
+          "p2": "Aswin Krishna"
+        },
+        {
+          "n": 8,
+          "p1": "Anandu PT",
+          "score": "4-11",
+          "p2": "Harikrishan MV"
+        },
+        {
+          "n": 9,
+          "p1": "Anandu PT",
+          "score": "11-8",
+          "p2": "Aswin Krishna"
+        },
+        {
+          "n": 10,
+          "p1": "Harikrishan MV",
+          "score": "11-5",
+          "p2": "Aswin Krishna"
+        }
+      ]
+    },
+    "C": {
+      "players": [
+        "Sahil Rahman",
+        "Brickson Jacob",
+        "Bibin Joseph",
+        "Deon",
+        "Arun Prakash"
+      ],
+      "matches": [
+        {
+          "n": 1,
+          "p1": "Sahil Rahman",
+          "score": "2-11",
+          "p2": "Brickson Jacob"
+        },
+        {
+          "n": 2,
+          "p1": "Sahil Rahman",
+          "score": "11-9",
+          "p2": "Bibin Joseph"
+        },
+        {
+          "n": 3,
+          "p1": "Sahil Rahman",
+          "score": "3-11",
+          "p2": "Deon"
+        },
+        {
+          "n": 4,
+          "p1": "Sahil Rahman",
+          "score": "9-11",
+          "p2": "Arun Prakash"
+        },
+        {
+          "n": 5,
+          "p1": "Brickson Jacob",
+          "score": "11-4",
+          "p2": "Bibin Joseph"
+        },
+        {
+          "n": 6,
+          "p1": "Brickson Jacob",
+          "score": "11-9",
+          "p2": "Deon"
+        },
+        {
+          "n": 7,
+          "p1": "Brickson Jacob",
+          "score": "11-4",
+          "p2": "Arun Prakash"
+        },
+        {
+          "n": 8,
+          "p1": "Bibin Joseph",
+          "score": "3-11",
+          "p2": "Deon"
+        },
+        {
+          "n": 9,
+          "p1": "Bibin Joseph",
+          "score": "4-11",
+          "p2": "Arun Prakash"
+        },
+        {
+          "n": 10,
+          "p1": "Deon",
+          "score": "11-3",
+          "p2": "Arun Prakash"
+        }
+      ]
+    },
+    "D": {
+      "players": [
+        "Vishnudev PS",
+        "Alain Thampan",
+        "Alwin Shanmughan",
+        "Rajeesh AP",
+        "Akshay Sabu"
+      ],
+      "matches": [
+        {
+          "n": 1,
+          "p1": "Vishnudev PS",
+          "score": "11-7",
+          "p2": "Alain Thampan"
+        },
+        {
+          "n": 2,
+          "p1": "Vishnudev PS",
+          "score": "11-3",
+          "p2": "Alwin Shanmughan"
+        },
+        {
+          "n": 3,
+          "p1": "Vishnudev PS",
+          "score": "11-7",
+          "p2": "Rajeesh AP"
+        },
+        {
+          "n": 4,
+          "p1": "Vishnudev PS",
+          "score": "9-11",
+          "p2": "Akshay Sabu"
+        },
+        {
+          "n": 5,
+          "p1": "Alain Thampan",
+          "score": "11-5",
+          "p2": "Alwin Shanmughan"
+        },
+        {
+          "n": 6,
+          "p1": "Alain Thampan",
+          "score": "10-12",
+          "p2": "Rajeesh AP"
+        },
+        {
+          "n": 7,
+          "p1": "Alain Thampan",
+          "score": "9-11",
+          "p2": "Akshay Sabu"
+        },
+        {
+          "n": 8,
+          "p1": "Alwin Shanmughan",
+          "score": "3-11",
+          "p2": "Rajeesh AP"
+        },
+        {
+          "n": 9,
+          "p1": "Alwin Shanmughan",
+          "score": "9-11",
+          "p2": "Akshay Sabu"
+        },
+        {
+          "n": 10,
+          "p1": "Rajeesh AP",
+          "score": "11-4",
+          "p2": "Akshay Sabu"
+        }
+      ]
+    }
   },
-  knockout: [
-    { match: "QF 1", p1: "Group A 1st", sets: ["","",""], p2: "Group B 2nd" },
-    { match: "QF 2", p1: "Group B 1st", sets: ["","",""], p2: "Group A 2nd" },
-    { match: "QF 3", p1: "Group C 1st", sets: ["","",""], p2: "Group D 2nd" },
-    { match: "QF 4", p1: "Group D 1st", sets: ["","",""], p2: "Group C 2nd" },
-    { match: "SF 1", p1: "Winner QF 1", sets: ["","",""], p2: "Winner QF 3" },
-    { match: "SF 2", p1: "Winner QF 2", sets: ["","",""], p2: "Winner QF 4" },
-    { match: "FINAL", p1: "Winner SF 1", sets: ["","",""], p2: "Winner SF 2" }
+  "knockout": [
+    {
+      "match": "QF 1",
+      "p1": "Madhav Anil",
+      "sets": [
+        "11-7",
+        "8-11",
+        "11-8"
+      ],
+      "p2": "Ebin Joseph"
+    },
+    {
+      "match": "QF 2",
+      "p1": "Harikrishan MV",
+      "sets": [
+        "8-11",
+        "10-8",
+        "11-5"
+      ],
+      "p2": "Yadhukrishnan K"
+    },
+    {
+      "match": "QF 3",
+      "p1": "Brickson Jacob",
+      "sets": [
+        "5-11",
+        "7-11",
+        ""
+      ],
+      "p2": "Rajeesh AP"
+    },
+    {
+      "match": "QF 4",
+      "p1": "Vishnudev PS",
+      "sets": [
+        "6-11",
+        "11-9",
+        "8-11"
+      ],
+      "p2": "Deon"
+    },
+    {
+      "match": "SF 1",
+      "p1": "Madhav Anil",
+      "sets": [
+        "6-11",
+        "11-9",
+        "11-8"
+      ],
+      "p2": "Rajeesh AP"
+    },
+    {
+      "match": "SF 2",
+      "p1": "Harikrishan MV",
+      "sets": [
+        "9-11",
+        "7-11",
+        ""
+      ],
+      "p2": "Deon"
+    },
+    {
+      "match": "FINAL",
+      "p1": "Madhav Anil",
+      "sets": [
+        "16-14",
+        "15-13",
+        ""
+      ],
+      "p2": "Deon"
+    }
   ]
 };
 
@@ -591,6 +1026,10 @@ function render(state, mode) {
     document.getElementById("liveText").textContent = "Connecting…";
     document.getElementById("notice").classList.remove("show");
     document.getElementById("srcNote").textContent = "Loading live scores…";
+  } else if (mode === "frozen") {
+    pill.style.display = "none";
+    document.getElementById("notice").classList.remove("show");
+    document.getElementById("srcNote").textContent = "Final results \u00b7 EJ 7th Anniversary Table Tennis Tournament";
   } else {
     pill.classList.add("snap"); pill.classList.remove("live");
     document.getElementById("liveText").textContent = "Reconnecting…";
@@ -655,14 +1094,8 @@ function load(showLoading, retries) {
 }
 if (typeof document !== "undefined") {
   document.getElementById("sheetLink").href = SHEET_URL;
-  render(SNAPSHOT, "loading");
-  load(true);
-  setInterval(function () { load(false); }, REFRESH_MS);
-  updatePill();
-  setInterval(updatePill, 1000);
-  document.addEventListener("visibilitychange", function () {
-    if (!document.hidden) load(false);
-  });
+  /* FROZEN - final results baked in; no live feed, no auto-refresh. */
+  render(SNAPSHOT, "frozen");
 }
 
 /* ---------- live presence: "X people are here now" (bottom of page) ---------- */
