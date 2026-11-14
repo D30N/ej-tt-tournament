@@ -600,11 +600,10 @@ function render(state, mode) {
 }
 
 /* ---------- knockout pill: start note, countdown, LIVE in one pill ---------- */
-/* Knockouts start Sat Nov 14, 2026 7:00 PM IST. The header pill rotates
-   between the start-time note and the ticking countdown from 5:00 PM; from
-   7:00 PM it is LIVE. Rotation phase is time-based (4s per message) so the
-   15s refresh never resets it. Times carry an explicit +05:30 offset, so
-   any viewer timezone works. */
+/* Knockouts start Sat Nov 14, 2026 7:00 PM IST. From 5:00 PM the pill shows
+   only the ticking countdown; from 7:00 PM it is LIVE. No rotation. The pill
+   still ticks every second, so the countdown counts down. Times carry an
+   explicit +05:30 offset, so any viewer timezone works. */
 var KO_COUNT_FROM = new Date("2026-11-14T17:00:00+05:30").getTime();
 var KO_START = new Date("2026-11-14T19:00:00+05:30").getTime();
 var KO_DAY_START = new Date("2026-11-14T00:00:00+05:30").getTime();
@@ -631,8 +630,7 @@ function updatePill() {
   if (now >= KO_START) { msg = "LIVE"; }
   else {
     var cd = pillCountdownText(now);
-    var msgs = cd ? [knockoutPillText(), cd] : [knockoutPillText()];
-    msg = msgs[Math.floor(now / 4000) % msgs.length];
+    msg = cd || knockoutPillText();
   }
   if (msg === "LIVE") { pill.classList.add("live"); pill.classList.remove("ko"); }
   else { pill.classList.remove("live"); pill.classList.add("ko"); }
